@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "480942314067",
+    "project_id": "providerproject-8d918",
+    "storage_bucket": "providerproject-8d918.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480942314067:android:a99a462bdc222786db2ca6",
+        "android_client_info": {
+          "package_name": "com.example.statemanagementflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGNeGuiKomySdkPMD9goJKj5dPq2wbzA4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
