@@ -54,28 +54,28 @@ class JsonPostProvider extends ChangeNotifier {
     }
   }
 
-  // Method for DELETE request
-  Future<void> deletePost(int postId) async {
-    try {
-      var deleteResponse = await http.delete(
-        Uri.parse("https://jsonplaceholder.typicode.com/posts/$postId"),
-        headers: {'Content-Type': 'application/json'},
-      );
+    // Method for DELETE request
+    Future<void> deletePost(int postId) async {
+      try {
+        var deleteResponse = await http.delete(
+          Uri.parse("https://jsonplaceholder.typicode.com/posts/$postId"),
+          headers: {'Content-Type': 'application/json'},
+        );
 
-      if (deleteResponse.statusCode == 200) {
-        // Post successfully deleted
-        _posts.removeWhere(
-                (post) => post.id == postId); // Remove the post from the list
-        notifyListeners(); // Notify listeners about the change
-      } else {
-        throw Exception('Failed to delete post');
+        if (deleteResponse.statusCode == 200) {
+          // Post successfully deleted
+          _posts.removeWhere(
+                  (post) => post.id == postId); // Remove the post from the list
+          notifyListeners(); // Notify listeners about the change
+        } else {
+          throw Exception('Failed to delete post');
+        }
+      } catch (e) {
+        throw Exception('Failed to delete post: $e');
       }
-    } catch (e) {
-      throw Exception('Failed to delete post: $e');
     }
-  }
 
-  // Method for PUT request
+    // Method for PUT request
   Future<Post> updatePost(Post post) async {
     try {
       var putResponse = await http.put(

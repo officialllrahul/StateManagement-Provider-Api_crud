@@ -9,6 +9,9 @@ import 'package:statemanagementflutter/JSONAPI/json_photos_api/jsonPhotoProvider
 import 'package:statemanagementflutter/JSONAPI/json_post_api/jsonPostProvider.dart';
 import 'package:statemanagementflutter/JSONAPI/json_todos_api/jsonTodoProvider.dart';
 import 'package:statemanagementflutter/JSONAPI/json_users_api/jsonUsersProvider.dart';
+import 'package:statemanagementflutter/PostmanApi/Items/itemProvider.dart';
+import 'package:statemanagementflutter/PostmanApi/Users/usersProvider.dart';
+import 'package:statemanagementflutter/PostmanApi/postMan_apiNav.dart';
 import 'package:statemanagementflutter/StreamBuilder/StreamViewPage.dart';
 import 'package:statemanagementflutter/api_navigate.dart';
 import 'package:statemanagementflutter/myProviderPage.dart';
@@ -46,14 +49,24 @@ class MyApp extends StatelessWidget {
           create: (context) => PostProvider(),
         ),
         //Json Post Api  Provider
-        ChangeNotifierProvider<JsonPostProvider>(create: (context) => JsonPostProvider()),
-        ChangeNotifierProvider<JsonCommentProvider>(create: (context)=> JsonCommentProvider()),
-        ChangeNotifierProvider<JsonAlbumProvider>(create: (context)=> JsonAlbumProvider()),
-        ChangeNotifierProvider<JsonPhotosProvider>(create: (context)=> JsonPhotosProvider()),
-        ChangeNotifierProvider<JsonTodoProvider>(create: (context)=> JsonTodoProvider()),
-        ChangeNotifierProvider<UserProvider>(create: (context)=> UserProvider()),
+        ChangeNotifierProvider<JsonPostProvider>(
+            create: (context) => JsonPostProvider()),
+        ChangeNotifierProvider<JsonCommentProvider>(
+            create: (context) => JsonCommentProvider()),
+        ChangeNotifierProvider<JsonAlbumProvider>(
+            create: (context) => JsonAlbumProvider()),
+        ChangeNotifierProvider<JsonPhotosProvider>(
+            create: (context) => JsonPhotosProvider()),
+        ChangeNotifierProvider<JsonTodoProvider>(
+            create: (context) => JsonTodoProvider()),
+        ChangeNotifierProvider<UserProvider>(
+            create: (context) => UserProvider()),
+        ChangeNotifierProvider<ItemProvider>(
+            create: (context) => ItemProvider()),
+        ChangeNotifierProvider<RazorPayCustomerProvider>(
+            create: (context) => RazorPayCustomerProvider()),
       ],
-      child:  MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: HomeScreen(),
       ),
@@ -70,15 +83,41 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ElevatedButton(onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => apiNavigatePage()),
-            );
-          }, child: const Text("Json Api")),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => apiNavigatePage()),
+                      );
+                    },
+                    child: const Text("Json Api")),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => postManApi()),
+                      );
+                    },
+                    child: const Text("Postman Api")),
+              ],
+            ),
+          ),
           const Center(
               child: SizedBox(
             height: 30,
+            child: Text(
+              "Below Data Fetch From Firebase FireStore",
+              style: TextStyle(fontSize: 20),
+            ),
+          )),
+          const Center(
+              child: SizedBox(
+            height: 80,
             child: Text(
               "Users Data",
               style: TextStyle(fontSize: 20),
@@ -216,19 +255,21 @@ class HomeScreen extends StatelessWidget {
           icon: const Icon(Icons.refresh),
           onPressed: () async {
             try {
-              UserProfileService userProfileService = context.read<UserProfileService>();
+              UserProfileService userProfileService =
+                  context.read<UserProfileService>();
               await userProfileService.fetchUserProfiles();
 
-              OrderProductService orderProductService = context.read<OrderProductService>();
+              OrderProductService orderProductService =
+                  context.read<OrderProductService>();
               await orderProductService.fetchOrderProducts();
 
-              CustomerService customerProfileService = context.read<CustomerService>();
+              CustomerService customerProfileService =
+                  context.read<CustomerService>();
               await customerProfileService.fetchCustomerProfiles();
             } catch (error) {
               print('Error: $error');
             }
           },
-
         ),
       ),
     );

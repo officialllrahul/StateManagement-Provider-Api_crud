@@ -88,7 +88,8 @@ class JsonCommentProvider extends ChangeNotifier {
         final replacedPost = Comment.fromJson(jsonDecode(putResponse.body));
         _posts[_posts.indexWhere((p) => p.id == replacedPost.id)] =
             replacedPost; // Update the post in the list
-        notifyListeners(); // Notify listeners about the change
+        notifyListeners();
+        print("Comment replace success");// Notify listeners about the change
         return replacedPost;
       } else {
         throw Exception('Failed to replace post');

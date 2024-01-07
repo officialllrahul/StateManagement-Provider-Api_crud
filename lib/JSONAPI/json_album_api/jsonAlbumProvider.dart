@@ -44,6 +44,7 @@ class JsonAlbumProvider extends ChangeNotifier {
       if (postResponse.statusCode == 201) {
         final newPost = Album.fromJson(jsonDecode(postResponse.body));
         _posts.add(newPost); // Add the new post to the list
+        print("post successfully created");
         notifyListeners(); // Notify listeners about the change
         return newPost;
       } else {
@@ -66,6 +67,7 @@ class JsonAlbumProvider extends ChangeNotifier {
         // Post successfully deleted
         _posts.removeWhere(
                 (post) => post.id == postId); // Remove the post from the list
+        print("post successfully deleted");
         notifyListeners(); // Notify listeners about the change
       } else {
         throw Exception('Failed to delete post');
@@ -88,7 +90,8 @@ class JsonAlbumProvider extends ChangeNotifier {
         final replacedPost = Album.fromJson(jsonDecode(putResponse.body));
         _posts[_posts.indexWhere((p) => p.id == replacedPost.id)] =
             replacedPost; // Update the post in the list
-        notifyListeners(); // Notify listeners about the change
+        notifyListeners();
+        print("post successfully update");// Notify listeners about the change
         return replacedPost;
       } else {
         throw Exception('Failed to replace post');
