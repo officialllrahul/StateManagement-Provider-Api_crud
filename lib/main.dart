@@ -10,6 +10,7 @@ import 'package:statemanagementflutter/JSONAPI/json_post_api/jsonPostProvider.da
 import 'package:statemanagementflutter/JSONAPI/json_todos_api/jsonTodoProvider.dart';
 import 'package:statemanagementflutter/JSONAPI/json_users_api/jsonUsersProvider.dart';
 import 'package:statemanagementflutter/PostmanApi/Items/itemProvider.dart';
+import 'package:statemanagementflutter/PostmanApi/Users/usersApi.dart';
 import 'package:statemanagementflutter/PostmanApi/Users/usersProvider.dart';
 import 'package:statemanagementflutter/PostmanApi/postMan_apiNav.dart';
 import 'package:statemanagementflutter/StreamBuilder/StreamViewPage.dart';
@@ -37,18 +38,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProfileService>(
-          create: (context) => UserProfileService(),
-        ),
+          create: (context) => UserProfileService()),
         ChangeNotifierProvider<OrderProductService>(
-          create: (context) => OrderProductService(),
-        ),
+          create: (context) => OrderProductService()),
         ChangeNotifierProvider<CustomerService>(
-          create: (context) => CustomerService(),
-        ),
+          create: (context) => CustomerService()),
         ChangeNotifierProvider<PostProvider>(
-          create: (context) => PostProvider(),
-        ),
-        //Json Post Api  Provider
+          create: (context) => PostProvider()),
         ChangeNotifierProvider<JsonPostProvider>(
             create: (context) => JsonPostProvider()),
         ChangeNotifierProvider<JsonCommentProvider>(
@@ -61,10 +57,10 @@ class MyApp extends StatelessWidget {
             create: (context) => JsonTodoProvider()),
         ChangeNotifierProvider<UserProvider>(
             create: (context) => UserProvider()),
-        ChangeNotifierProvider<ItemProvider>(
-            create: (context) => ItemProvider()),
-        ChangeNotifierProvider<RazorPayCustomerProvider>(
-            create: (context) => RazorPayCustomerProvider()),
+        ChangeNotifierProvider<RazorPayItemsProvider>(
+            create: (context) => RazorPayItemsProvider()),
+        ChangeNotifierProvider<CustomersProvider>(
+            create: (context) => CustomersProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -92,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => apiNavigatePage()),
+                            builder: (context) => const apiNavigatePage()),
                       );
                     },
                     child: const Text("Json Api")),
@@ -100,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => postManApi()),
+                        MaterialPageRoute(builder: (context) => const postManApi()),
                       );
                     },
                     child: const Text("Postman Api")),

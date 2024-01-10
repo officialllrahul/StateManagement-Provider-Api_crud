@@ -15,9 +15,7 @@ class jsonAlbumApis extends StatelessWidget {
       ),
       body: Consumer<JsonAlbumProvider>(
         builder: (context, postProvider, _) {
-          // Fetch posts when the widget is built
           postProvider.fetchPosts();
-
           return Column(
             children: [
               Padding(
@@ -25,32 +23,27 @@ class jsonAlbumApis extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Create a new post:',
                       style:
                       TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     TextField(
                       controller: titleController,
-                      decoration: InputDecoration(labelText: 'Name'),
+                      decoration: const InputDecoration(labelText: 'Name'),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () async {
-                        // Create a new post and add it using the provider
                         final newPost = Album(
                           userId: 1,
-                          // Replace with your desired user ID
                           id: 0,
                           title: titleController.text,
-
                         );
                         await postProvider.createPost(newPost);
-
-                        // Clear the input fields after creating the post
                         titleController.clear();
                       },
-                      child: Text('Add Post'),
+                      child: const Text('Add Post'),
                     ),
                   ],
                 ),
@@ -63,7 +56,7 @@ class jsonAlbumApis extends StatelessWidget {
                     return ListTile(
                       title: Text(
                         post.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: Colors
@@ -74,26 +67,25 @@ class jsonAlbumApis extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             onPressed: () {
                               postProvider.deletePost(post.id);
                             },
                           ),
                           IconButton(
-                            icon: Icon(Icons.edit),
+                            icon: const Icon(Icons.edit),
                             onPressed: () async {
-                              // Display a dialog with text fields for updating the post
                               titleController.text = post.title;
                               await showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Update Post'),
+                                    title: const Text('Update Post'),
                                     content: Column(
                                       children: [
                                         TextField(
                                           controller: titleController,
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Title'),
                                         ),
                                       ],
@@ -103,7 +95,7 @@ class jsonAlbumApis extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: Text('Cancel'),
+                                        child: const Text('Cancel'),
                                       ),
                                       TextButton(
                                         onPressed: () {
@@ -118,7 +110,7 @@ class jsonAlbumApis extends StatelessWidget {
                                           // Close the dialog
                                           Navigator.pop(context);
                                         },
-                                        child: Text('Update'),
+                                        child: const Text('Update'),
                                       ),
                                     ],
                                   );

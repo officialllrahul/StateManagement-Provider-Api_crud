@@ -21,7 +21,6 @@ class JsonAlbumProvider extends ChangeNotifier {
         List<dynamic> jsonData = jsonDecode(response.body);
         List<Album> fetchedPosts =
         jsonData.map((json) => Album.fromJson(json)).toList();
-
         _posts = fetchedPosts; // Update the list of posts
         notifyListeners(); // Notify listeners about the change
       } else {

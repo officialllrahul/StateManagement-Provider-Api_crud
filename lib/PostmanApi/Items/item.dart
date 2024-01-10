@@ -1,37 +1,37 @@
-import 'dart:convert';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:statemanagementflutter/PostmanApi/Users/usersDataModel.dart';
-import 'package:statemanagementflutter/PostmanApi/Users/usersProvider.dart';
 
-class CustomerHomePage extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:statemanagementflutter/PostmanApi/Items/itemDataModel.dart';
+
+import 'itemProvider.dart';
+
+class itemsHomepage extends StatefulWidget {
   @override
-  State<CustomerHomePage> createState() => _CustomerHomePageState();
+  State<itemsHomepage> createState() => _itemsHomepageState();
 }
 
-class _CustomerHomePageState extends State<CustomerHomePage> {
+class _itemsHomepageState extends State<itemsHomepage> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
 
   Future<void> _submitForm(BuildContext context) async {
     final String name = nameController.text.trim();
-    final String email = emailController.text.trim();
+    final String description = descriptionController.text.trim();
+    final int amount = int.parse(amountController.text.trim());
 
-    if (name.isNotEmpty && email.isNotEmpty) {
+    if (name.isNotEmpty && description.isNotEmpty && amount != null) {
       try {
-        await Provider.of<CustomersProvider>(context, listen: false)
-            .createCustomer(name, email);
-        // Optionally, clear the text fields after successful submission
+        await Provider.of<RazorPayItemsProvider>(context, listen: false)
+            .createItems(name, description, amount);
         nameController.clear();
-        emailController.clear();
+        descriptionController.clear();
+        amountController.clear();
       } catch (e) {
         print('Error creating customer: $e');
       }
     } else {
-      // Display a message or alert about empty fields
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all fields'),
@@ -40,18 +40,18 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     }
   }
 
-  Future<void> _updateCustomer(BuildContext context, String customerId) async {
+  Future<void> _updateCustomer(BuildContext context, String itemId) async {
     final String newName = nameController.text.trim();
-    final String newEmail = emailController.text.trim();
+    final String newDescription = descriptionController.text.trim();
+    final int amount = int.parse(amountController.text.trim()); // Parse amount as int
 
-    if (newName.isNotEmpty && newEmail.isNotEmpty) {
+    if (newName.isNotEmpty && newDescription.isNotEmpty) {
       try {
-        await Provider.of<CustomersProvider>(context, listen: false)
-            .updateCustomer(customerId, newName, newEmail);
-
-        // Optionally, clear the text fields after successful update
+        await Provider.of<RazorPayItemsProvider>(context, listen: false)
+            .updateItem(itemId, newName, newDescription, amount);
         nameController.clear();
-        emailController.clear();
+        descriptionController.clear();
+        amountController.clear();
       } catch (e) {
         print('Error updating customer: $e');
         // Handle error
@@ -66,6 +66,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     }
   }
 
+
   void _showUpdateDialog(BuildContext context, Item currentItem) {
     showDialog(
       context: context,
@@ -78,13 +79,25 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
-                    labelText: 'Name', hintText: currentItem.name),
+                  labelText: 'Name',
+                  hintText: currentItem.name,
+                ),
               ),
               const SizedBox(height: 16),
               TextField(
-                controller: emailController,
+                controller: descriptionController,
                 decoration: InputDecoration(
-                    labelText: 'Email', hintText: currentItem.email),
+                  labelText: 'Description',
+                  hintText: currentItem.description,
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: amountController,
+                decoration: InputDecoration(
+                  labelText: 'Amount',
+                  hintText: currentItem.amount.toString(),
+                ),
               ),
             ],
           ),
@@ -108,7 +121,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, String customerId) {
+
+  void _showDeleteDialog(BuildContext context, String itemId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -124,10 +138,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             ),
             TextButton(
               onPressed: () {
-                Fluttertoast.showToast(
-                  msg: "Sorry, you are not allowed to delete this user",
-                  toastLength: Toast.LENGTH_SHORT,
-                );
+                _deleteItem(context, itemId);
+                Navigator.pop(context);
               },
               child: const Text('Delete'),
             ),
@@ -136,7 +148,15 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       },
     );
   }
-
+  Future<void> _deleteItem(BuildContext context, String itemId) async {
+    try {
+      await Provider.of<RazorPayItemsProvider>(context, listen: false)
+          .deleteItem(itemId);
+    } catch (e) {
+      print('Error deleting item: $e');
+      // Handle error
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,8 +173,13 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              controller: descriptionController,
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: amountController,
+              decoration: const InputDecoration(labelText: 'Amount'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -165,7 +190,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             ),
             const SizedBox(height: 20),
             FutureProvider<List<Item>?>(
-              create: (_) => CustomersProvider().fetchData(),
+              create: (_) => RazorPayItemsProvider().fetchData(),
               catchError: (_, error) {
                 print('Error fetching data: $error');
                 return null;
@@ -183,7 +208,13 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                           Item currentItem = items[index];
                           return ListTile(
                             title: Text(currentItem.name.toString()),
-                            subtitle: Text(currentItem.email.toString()),
+                            subtitle: Column(
+                              children: [
+                                Text(currentItem.description.toString()),
+                                Text('₹-${currentItem.amount.toString()}'),
+                                Text(currentItem.currency.toString()),
+                              ],
+                            ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
