@@ -12,7 +12,7 @@ class JsonPostApis extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('FutureProvider Example'),
+        title: const Text('FutureProvider Example'),
       ),
       body: Consumer<JsonPostProvider>(
         builder: (context, postProvider, _) {
@@ -26,18 +26,18 @@ class JsonPostApis extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Create a new post:',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     TextField(
                       controller: titleController,
-                      decoration: InputDecoration(labelText: 'Title'),
+                      decoration: const InputDecoration(labelText: 'Title'),
                     ),
                     TextField(
                       controller: bodyController,
-                      decoration: InputDecoration(labelText: 'Body'),
+                      decoration: const InputDecoration(labelText: 'Body'),
                     ),
                     SizedBox(height: 16),
                     ElevatedButton(

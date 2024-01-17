@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statemanagementflutter/JSONAPI/json_album_api/jsonAlbumDataModel.dart';
 import 'package:statemanagementflutter/JSONAPI/json_album_api/jsonAlbumProvider.dart';
-import 'package:statemanagementflutter/JSONAPI/json_comment_api/jsonCommentDataModel.dart';
 
 class jsonAlbumApis extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();

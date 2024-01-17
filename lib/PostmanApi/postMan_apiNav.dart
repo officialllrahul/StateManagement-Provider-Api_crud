@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:statemanagementflutter/PostmanApi/FakeStoreApi/UserInterface.dart';
 import 'package:statemanagementflutter/PostmanApi/Items/item.dart';
 import 'package:statemanagementflutter/PostmanApi/Items/itemById.dart';
-import 'package:statemanagementflutter/PostmanApi/Items/itemapi.dart';
+import 'package:statemanagementflutter/PostmanApi/Task/movieScreen.dart';
 import 'package:statemanagementflutter/PostmanApi/Users/customerById.dart';
 import 'package:statemanagementflutter/PostmanApi/Users/usersApi.dart';
 import 'package:statemanagementflutter/PostmanApi/razorPayIntergration.dart';
@@ -37,13 +38,13 @@ class _postManApiState extends State<postManApi> {
             ElevatedButton(onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => customerById()),
+                MaterialPageRoute(builder: (context) => const customerById()),
               );
             }, child: const Text("Postman Users(By Id)")),
             ElevatedButton(onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ItemsById()),
+                MaterialPageRoute(builder: (context) => const ItemsById()),
               );
             }, child: const Text("Postman Items(By Id)")),
             ElevatedButton(onPressed: (){
@@ -52,6 +53,18 @@ class _postManApiState extends State<postManApi> {
                 MaterialPageRoute(builder: (context) => MyHomePage()),
               );
             }, child: const Text("Razorpay Payment Gateway")),
+            ElevatedButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MovieScreen()),
+              );
+            }, child: const Text("Movie Screen")),
+            ElevatedButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => fakeStore()),
+              );
+            }, child: const Text("Fake product")),
           ],
         ),
       ),

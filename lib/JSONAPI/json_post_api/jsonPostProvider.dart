@@ -16,14 +16,12 @@ class JsonPostProvider extends ChangeNotifier {
         Uri.parse("https://jsonplaceholder.typicode.com/posts"),
         headers: {},
       );
-
       if (response.statusCode == 200) {
         List<dynamic> jsonData = jsonDecode(response.body);
         List<Post> fetchedPosts =
         jsonData.map((json) => Post.fromJson(json)).toList();
-
-        _posts = fetchedPosts; // Update the list of posts
-        notifyListeners(); // Notify listeners about the change
+        _posts = fetchedPosts;
+        notifyListeners();
       } else {
         throw Exception('Failed to load data');
       }
@@ -43,8 +41,8 @@ class JsonPostProvider extends ChangeNotifier {
 
       if (postResponse.statusCode == 201) {
         final newPost = Post.fromJson(jsonDecode(postResponse.body));
-        _posts.add(newPost); // Add the new post to the list
-        notifyListeners(); // Notify listeners about the change
+        _posts.add(newPost);
+        notifyListeners();
         return newPost;
       } else {
         throw Exception('Failed to create post');
