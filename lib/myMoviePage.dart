@@ -32,7 +32,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                 // Add your button onPressed logic here
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                backgroundColor: Colors.green,
               ),
               child: const Row(
                 children: [

@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'jsonAlbumDataModel.dart';
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 
 class JsonAlbumProvider extends ChangeNotifier {
   List<Album> _posts = [];
